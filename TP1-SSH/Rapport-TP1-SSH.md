@@ -103,15 +103,13 @@ Tunnel vers le serveur web Apache :
 ssh -L 1024:127.0.0.1:80 aminata@192.168.1.39
 ```
 
-Le port 1024 de la machine qui lance la commande est relié au port 80 (Apache) du serveur.
-
-On a d'abord fait un premier essai depuis la VM elle-même. Comme la VM se connectait à elle-même pour la première fois, SSH a redemandé l'empreinte et le mot de passe.
+On lance cette commande depuis le PC Windows. Le port 1024 du client est alors relié au port 80 (Apache) du serveur, et on se retrouve aussi sur le terminal du serveur.
 
 ![Capture 8](captures/capture-8-tunnel-web.png)
 
-Capture 8 : premier essai du tunnel, lancé depuis la VM
+Capture 8 : ouverture du tunnel depuis le client Windows
 
-On a ensuite lancé la même commande depuis le PC Windows, qui est le vrai client. Pendant que la connexion SSH reste ouverte, on vérifie dans PowerShell que le port 1024 répond bien sur le client :
+Pendant que cette connexion SSH reste ouverte, on vérifie dans un autre PowerShell que le port 1024 répond bien sur le client :
 
 ```
 Test-NetConnection -ComputerName 127.0.0.1 -Port 1024
