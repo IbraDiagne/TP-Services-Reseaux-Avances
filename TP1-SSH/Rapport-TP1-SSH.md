@@ -103,13 +103,31 @@ Tunnel vers le serveur web Apache :
 ssh -L 1024:127.0.0.1:80 aminata@192.168.1.39
 ```
 
-Le port 1024 est relié au port 80 (Apache) du serveur, donc http://localhost:1024 affiche le site du serveur. Pour cet essai, on a lancé la commande depuis la VM elle-même, c'est pour ça que SSH a redemandé l'empreinte et le mot de passe.
+Le port 1024 de la machine qui lance la commande est relié au port 80 (Apache) du serveur.
+
+On a d'abord fait un premier essai depuis la VM elle-même. Comme la VM se connectait à elle-même pour la première fois, SSH a redemandé l'empreinte et le mot de passe.
 
 ![Capture 8](captures/capture-8-tunnel-web.png)
 
-Capture 8 : tunnel vers le serveur web
+Capture 8 : premier essai du tunnel, lancé depuis la VM
 
-Tunnel vers MariaDB, lancé cette fois depuis le PC Windows :
+On a ensuite lancé la même commande depuis le PC Windows, qui est le vrai client. Pendant que la connexion SSH reste ouverte, on vérifie dans PowerShell que le port 1024 répond bien sur le client :
+
+```
+Test-NetConnection -ComputerName 127.0.0.1 -Port 1024
+```
+
+![Capture 9](captures/capture-9-test-port-1024.jpg)
+
+Capture 9 : le port 1024 répond sur le client Windows
+
+Enfin, on ouvre http://localhost:1024 dans le navigateur de Windows. La page par défaut d'Apache sur Ubuntu s'affiche. Apache n'est pas installé sur le PC Windows, donc cette page vient bien du serveur et elle est passée par le tunnel SSH.
+
+![Capture 10](captures/capture-10-page-apache.jpg)
+
+Capture 10 : la page Apache du serveur affichée sur le client grâce au tunnel
+
+Tunnel vers MariaDB, lancé lui aussi depuis le PC Windows :
 
 ```
 ssh -L 3307:127.0.0.1:3306 aminata@192.168.1.39
@@ -121,9 +139,9 @@ Le port 3307 du client est relié au port 3306 (MariaDB) du serveur. On a vérif
 Test-NetConnection -ComputerName 127.0.0.1 -Port 3307
 ```
 
-![Capture 9](captures/capture-9-tunnel-mariadb.png)
+![Capture 11](captures/capture-11-tunnel-mariadb.png)
 
-Capture 9 : le test du port 3307 a réussi
+Capture 11 : le test du port 3307 a réussi
 
 ## 7. Difficultés
 
